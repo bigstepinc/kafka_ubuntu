@@ -224,6 +224,9 @@ while read line; do
 	fi
 done < '/opt/kafka_2.11-0.10.1.0/config/kafka.cluster.new'
 
+cp /opt/kafka_2.11-0.10.1.0/config/kafka.cluster.new /opt/kafka_2.11-0.10.1.0/config/kafka.cluster
+cp /opt/kafka_2.11-0.10.1.0/config/zk.cluster.new /opt/kafka_2.11-0.10.1.0/config/zk.cluster
+
 sed "s/bootstrap.servers=localhost:9092/bootstrap.servers=$local_ip:9092/" $KAFKA_HOME/config/producer.properties >> $KAFKA_HOME/config/producer.properties.tmp
 mv $KAFKA_HOME/config/producer.properties.tmp $KAFKA_HOME/config/producer.properties
 
