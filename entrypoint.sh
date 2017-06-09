@@ -227,6 +227,20 @@ done < '/opt/kafka_2.11-0.10.1.0/config/kafka.cluster.new'
 cp /opt/kafka_2.11-0.10.1.0/config/kafka.cluster.new /opt/kafka_2.11-0.10.1.0/config/kafka.cluster
 cp /opt/kafka_2.11-0.10.1.0/config/zk.cluster.new /opt/kafka_2.11-0.10.1.0/config/zk.cluster
 
+rm /opt/kafka_2.11-0.10.1.0/config/zk.cluster.new
+rm /opt/kafka_2.11-0.10.1.0/config/zk.cluster.tmp
+rm /opt/kafka_2.11-0.10.1.0/config/kafka.cluster.new
+rm /opt/kafka_2.11-0.10.1.0/config/kafka.cluster.tmp
+
+echo "akka.logger-startup-timeout = 30s" >> /opt/kafka-manager-1.3.3.7/conf/application.conf
+echo "akka.logger-startup-timeout = 30s" >> /tmp/kafka-manager/conf/application.conf
+
+sed "s/basicAuthentication.enabled=false/basicAuthentication.enabled=true/" /tmp/kafka-manager/conf/application.conf >> /tmp/kafka-manager/conf/application.conf.tmp
+mv /tmp/kafka-manager/conf/application.conf.tmp /tmp/kafka-manager/conf/application.conf
+
+sed "s/basicAuthentication.enabled=false/basicAuthentication.enabled=true/" /opt/kafka-manager-1.3.3.7/conf/application.conf >> /opt/kafka-manager-1.3.3.7/conf/application.conf.tmp
+mv /opt/kafka-manager-1.3.3.7/conf/application.conf.tmp /opt/kafka-manager-1.3.3.7/conf/application.conf
+
 sed "s/bootstrap.servers=localhost:9092/bootstrap.servers=$local_ip:9092/" $KAFKA_HOME/config/producer.properties >> $KAFKA_HOME/config/producer.properties.tmp
 mv $KAFKA_HOME/config/producer.properties.tmp $KAFKA_HOME/config/producer.properties
 
