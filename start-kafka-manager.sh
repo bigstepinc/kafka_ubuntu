@@ -1,6 +1,7 @@
 #! /bin/bash
 
 touch hosts 
+export KAFKA_MANAGER_HOME=/opt/kafka-manager
 
 if [ "$HOSTNAME_ZOOKEEPER" != "" ]; then
 	sleep 5
