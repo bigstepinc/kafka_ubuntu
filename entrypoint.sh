@@ -15,6 +15,9 @@ touch hosts
 sleep 15
 nslookup $HOSTNAME_ZOOKEEPER > zk.cluster
 
+export KAFKA_HOME=/opt/kafka_2.11-0.10.1.0 
+export KAFKA_MANAGER_HOME=/opt/kafka-manager
+
 # Configure Zookeeper
 NO_ZK=$(($(wc -l < zk.cluster) - 2))
 
@@ -26,38 +29,10 @@ while [ $NO_ZK -le $NO_ZOOKEEPER ] ; do
 done
 
 # Configure Zookeeper
-#NO_ZK=$(($(wc -l < zk.cluster) - 2))#
-
-#if [ $NO_ZK -ge 1 ] ; then#
-#	while read line; do                                                                                                        
-#                ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-#                echo "$ip" >> zk.cluster.tmp                                                                                       
-#        done < 'zk.cluster' 
-#else#
-#	while [ $NO_ZK -lt 1 ] ; do
-#		while read line; do
-#			ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-#echo "$ip" >> zk.cluster.tmp
-#		done < 'zk.cluster'	
-#		sleep 5
-#		nslookup $HOSTNAME_ZOOKEEPER > zk.cluster
-
-		# Configure Zookeeper
-#		NO_ZK=$(($(wc -l < zk.cluster) - 2))
-#	done
-#fi	
-
 while read line; do                                                                                                        
       ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
       echo "$ip" >> zk.cluster.tmp                                                                                       
 done < 'zk.cluster'
-
-#rm zk.cluster
-	
-#while read line; do                                                                                                        
-#                ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-#                echo "$ip" >> zk.cluster.tmp                                                                                       
-#        done < 'zk.cluster'
 
 sort -n zk.cluster.tmp > zk.cluster.tmp.sort
 mv zk.cluster.tmp.sort zk.cluster.tmp
@@ -79,25 +54,6 @@ index=0
 nslookup $HOSTNAME_KAFKA > kafka.cluster
 
 NO_K=$(($(wc -l < kafka.cluster) - 2))
-
-#This section is completely commented
-#if [ $NOK -ge 1 ] ; then#
-#	while read line; do                                                                                                        
-#                ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-#                echo "$ip" >> kafka.cluster.tmp                                                                                    
-#        done < 'kafka.cluster'
-#else#
-#	while [ $NOK -lt 1 ] ; do
-#		while read line; do
-#			ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-#			echo "$ip" >> kafka.cluster.tmp
-#		done < 'kafka.cluster'
-#
-#		nslookup $HOSTNAME_KAFKA > kafka.cluster
-#
-#		NOK=$(($(wc -l < kafka.cluster) - 2))
-#	done
-#fi
 
 while [ $NO_K -le $NO ] ; do
         rm -rf kafka.cluster
@@ -150,12 +106,6 @@ rm hosts.txt
 touch hosts 
 
 if [ "$HOSTNAME_ZOOKEEPER" != "" ]; then
-	#sleep 5
-	#nslookup $HOSTNAME_ZOOKEEPER >> zk.cluster
-
-	#echo "the zookeeper cluster is the following one"
-	#cat zk.cluster
-
 	# Configure Zookeeper
 	NO=$(($(wc -l < zk.cluster) - 2))
 
@@ -207,9 +157,9 @@ while read line; do
 			path2=$(echo $KAFKA_PATH | tr "\\" " " | awk '{ print $2 }')
 			path3=$(echo $KAFKA_PATH | tr "\\" " " | awk '{ print $3 }')
 			path=$path1$path2$path3
-			#cd $path && mkdir kafka-logs-$HOSTNAME_KAFKA
+
 			cd $path && mkdir kafka-logs-$index
-			#sed "s/log.dirs.*/log.dirs=$KAFKA_PATH\/kafka-logs-$HOSTNAME_KAFKA/"  $KAFKA_HOME/config/server-$index.properties >>  $KAFKA_HOME/config/server-$index.properties.tmp &&
+			
         		sed "s/log.dirs.*/log.dirs=$KAFKA_PATH\/kafka-logs-$index/"  $KAFKA_HOME/config/server-$index.properties >>  $KAFKA_HOME/config/server-$index.properties.tmp &&
 			mv  $KAFKA_HOME/config/server-$index.properties.tmp  $KAFKA_HOME/config/server-$index.properties
 			
@@ -218,7 +168,6 @@ while read line; do
         		mv  $KAFKA_HOME/config/zookeeper.properties.tmp  $KAFKA_HOME/config/zookeeper.properties
 		fi
 		
-		#path=$path"/kakfa-logs-$HOSTNAME_KAFKA/.lock"
 		path=$path"/kafka-logs-$index/.lock"
 		rm $path
 	fi
