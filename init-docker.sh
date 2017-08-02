@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prepare the environment
-apt-get update && apt-get -y install wget tar openjdk-8-jdk curl git unzip dnsutils  net-tools && apt-get clean 
+apt-get update && apt-get -y install wget tar curl openjdk-8-jdk curl git unzip dnsutils  net-tools && apt-get clean 
 
 # Application download and install
 cd /opt && wget http://apache.mirror.anlx.net/kafka/0.10.1.0/kafka_2.11-0.10.1.0.tgz 
