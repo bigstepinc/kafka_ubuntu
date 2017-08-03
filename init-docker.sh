@@ -28,6 +28,6 @@ sbt clean dist && \
 mv ./target/universal/kafka-manager*.zip /opt && \
 cd /opt && \
 unzip kafka-manager*.zip && \
-ln -s $(find kafka-manager* -type d -prune) kafka-manager
+#ln -s $(find kafka-manager* -type d -prune) kafka-manager
     
-rm /opt/kafka-manager*.zip
+#rm /opt/kafka-manager*.zip
