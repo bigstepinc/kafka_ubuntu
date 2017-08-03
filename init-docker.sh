@@ -8,12 +8,12 @@ cd /opt && wget http://apache.mirror.anlx.net/kafka/0.10.1.0/kafka_2.11-0.10.1.0
 cd /opt && tar xzvf /opt/kafka_2.11-0.10.1.0.tgz 
 rm -rf /opt/kafka_2.11-0.10.1.0.tgz
 
-export KAFKA_HOME /opt/kafka_2.11-0.10.1.0 
+export KAFKA_HOME=/opt/kafka_2.11-0.10.1.0 
 
 # Install Kafka and Kafka Manager
-export SBT_VERSION 0.13.11
-export SBT_HOME /usr/local/sbt
-export PATH ${PATH}:${SBT_HOME}/bin
+export SBT_VERSION=0.13.11
+export SBT_HOME=/usr/local/sbt
+export PATH=${PATH}:${SBT_HOME}/bin
 
 # Install sbt
 curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
